@@ -62,6 +62,7 @@ int main(int argc, char const *argv[])
             return 0;
         default:
             printf("Opcao invalida!!!\n");
+            pause();
             break;
         }
     }
@@ -163,7 +164,7 @@ void list_name(char *str)
     int index = 1;
     
     printf("Lista de Nome:\n");
-        if (str[0] == '\0')
+    if (str[0] == '\0')
     {
         printf("Nenhum nome foi adicionado!\n");
         pause();
