@@ -20,8 +20,8 @@ int menu(void)
 		clear();
 		printf("-----[ Menu ]-----\n");
         printf("1 - Incluir nome\n");
-        printf("2 - Listar      \n");
-        printf("3- Sair        \n");
+        printf("2 - Listar\n");
+        printf("3- Sair\n");
         printf("Digite: ");
             scanf("%d", &resposta);
         setbuf(stdin,NULL);
