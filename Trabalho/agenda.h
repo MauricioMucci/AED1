@@ -31,6 +31,7 @@ void *pBuffer;
 
 void pause();
 void limpa();
+int menu(Variaveis *var, Fila *fila);
 void lerString(char palavra[], int tamanho, Variaveis *var);
 
 void reset(Fila *fila);
