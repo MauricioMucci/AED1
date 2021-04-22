@@ -32,6 +32,7 @@ void *pBuffer;
 void pause();
 void limpa();
 int menu(Variaveis *var, Fila *fila);
+int menu_imprimir(Variaveis *var, Fila *fila);
 void lerString(char palavra[], int tamanho, Variaveis *var);
 
 void reset(Fila *fila);
@@ -41,4 +42,4 @@ void pop(Fila *fila);
 void clear(Fila *fila);
 void fill_data(TipoFila *nodo, Variaveis *var);
 void imprimir(Fila *fila, Variaveis *var);
-void ordena(Fila *fila, TipoFila *nodo, Variaveis *var);
+void imprimir_inverso(Fila *fila, Variaveis *var);

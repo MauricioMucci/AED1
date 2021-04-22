@@ -20,7 +20,7 @@ int menu(Variaveis *var, Fila *fila){
     printf("2 - Remover\n");
     printf("3 - Listar\n");
     printf("4 - Esvaziar\n");
-    printf("5- Sair\n");
+    printf("5 - Sair\n");
     printf("Digite: ");
         scanf("%hd", &var->i);
     setbuf(stdin,NULL);
@@ -34,8 +34,7 @@ int menu(Variaveis *var, Fila *fila){
             pop(fila);
             break;
         case 3:
-            limpa();
-            imprimir(fila, var);
+            while(menu_imprimir(var, fila) == 1);
             break;
         case 4:
             limpa();
@@ -50,6 +49,39 @@ int menu(Variaveis *var, Fila *fila){
             printf("\nTente novamente!\n");
             pause();
             break;
+    }
+
+    return 1;
+}
+
+int menu_imprimir(Variaveis *var, Fila *fila){
+    
+    limpa();
+    
+    printf("-----[ Listando ]-----\n");
+    printf("1 - Ordem de escrita\n");
+    printf("2 - Ordem inversa\n");
+    printf("3- Voltar\n");
+    printf("Digite: ");
+        scanf("%hd", &var->i);
+    setbuf(stdin,NULL);
+
+    switch (var->i)
+    {
+    case 1:
+        limpa();
+        imprimir(fila, var);
+        break;
+    case 2:
+        limpa();
+        imprimir_inverso(fila, var);
+        break;
+    case 3:
+        return 0;
+    default:
+        printf("\nTente novamente!\n");
+        pause();
+        break;
     }
 
     return 1;
@@ -183,6 +215,25 @@ void imprimir(Fila *fila, Variaveis *var){
     for(tmp = fila->primeiro; tmp != NULL; tmp = tmp->proximo)
     {
         printf("-----[ Contato %d ]-----\n",var->i++);
+        printf("Nome: %s\nIdade: %d\nTelefone: %d\n", tmp->conteudo.nome, tmp->conteudo.idade, tmp->conteudo.telefone);
+    }
+    pause();
+}
+
+void imprimir_inverso(Fila *fila, Variaveis *var){
+    if (empty(fila))
+    {
+        printf("Lista de contatos esta vazia!\n");
+        pause();
+        return;
+    }
+
+    TipoFila *tmp;
+    var->i = fila->tamanho;
+
+    for(tmp = fila->ultimo; tmp != NULL; tmp = tmp->anterior)
+    {
+        printf("-----[ Contato %d ]-----\n",var->i--);
         printf("Nome: %s\nIdade: %d\nTelefone: %d\n", tmp->conteudo.nome, tmp->conteudo.idade, tmp->conteudo.telefone);
     }
     pause();
