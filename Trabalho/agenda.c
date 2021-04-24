@@ -19,8 +19,9 @@ int menu(Variaveis *var, Fila *fila){
     printf("1 - Incluir\n");
     printf("2 - Remover\n");
     printf("3 - Listar\n");
-    printf("4 - Esvaziar\n");
-    printf("5 - Sair\n");
+    printf("4 - Buscar\n");
+    printf("5 - Esvaziar\n");
+    printf("6 - Sair\n");
     printf("Digite: ");
         scanf("%hd", &var->i);
     setbuf(stdin,NULL);
@@ -38,11 +39,15 @@ int menu(Variaveis *var, Fila *fila){
             break;
         case 4:
             limpa();
+            busca(fila, var);
+            break;
+        case 5:
+            limpa();
             clear(fila);
             printf("Lista apagada com sucesso!\n");
             pause();
             break;
-        case 5:
+        case 6:
             limpa();
             return 0;
         default:
@@ -61,7 +66,7 @@ int menu_imprimir(Variaveis *var, Fila *fila){
     printf("-----[ Listando ]-----\n");
     printf("1 - Ordem de escrita\n");
     printf("2 - Ordem inversa\n");
-    printf("3- Voltar\n");
+    printf("3 - Voltar\n");
     printf("Digite: ");
         scanf("%hd", &var->i);
     setbuf(stdin,NULL);
@@ -237,4 +242,28 @@ void imprimir_inverso(Fila *fila, Variaveis *var){
         printf("Nome: %s\nIdade: %d\nTelefone: %d\n", tmp->conteudo.nome, tmp->conteudo.idade, tmp->conteudo.telefone);
     }
     pause();
+}
+
+void busca(Fila *fila, Variaveis *var){
+    if (empty(fila))
+    {
+        printf("Lista de contatos esta vazia!\n");
+        pause();
+        return;
+    }
+
+    TipoFila *tmp;
+
+    printf("Digite o nome do contato: ");
+        lerString(var->aux, MAX, var);
+
+    for(tmp = fila->primeiro; tmp != NULL; tmp = tmp->proximo)
+    {
+        if (strcmp(var->aux, tmp->conteudo.nome) == 0)
+        {
+            printf("\nNome: %s\nIdade: %d\nTelefone: %d\n", tmp->conteudo.nome, tmp->conteudo.idade, tmp->conteudo.telefone);
+            pause();
+            return;
+        }
+    }
 }

@@ -23,7 +23,7 @@ typedef struct{
 } Fila;
 
 typedef struct{
-    char c;
+    char c, aux[MAX];
     short int i;
 } Variaveis;
 
@@ -43,3 +43,4 @@ void clear(Fila *fila);
 void fill_data(TipoFila *nodo, Variaveis *var);
 void imprimir(Fila *fila, Variaveis *var);
 void imprimir_inverso(Fila *fila, Variaveis *var);
+void busca(Fila *fila, Variaveis *var);
