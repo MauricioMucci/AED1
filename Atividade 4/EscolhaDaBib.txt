@@ -1,0 +1,7 @@
+1. Não escolhi os exemplos 1, 6, 7 ou 8, pois são exemplos que so funcionam em um SO especifico;
+
+2. Não escolhi o exemplo 5, pois resultam em tipos diferentes de tempo dependendo do SO (CPU x Wall);
+
+3. Não escolhi o exemplo 4, pois so devolve uma unica unidade de medida (segundos);
+
+4. Não escolhi o exemplo 2, pois requer C++11 ou superior.
