@@ -22,7 +22,7 @@ int main(int argc, char const *argv[]) {
         exit(1);
     }
     
-    srand((unsigned)time(&var->t));
+    srand(time(NULL));
 
     reset(var);
 
