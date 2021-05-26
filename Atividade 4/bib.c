@@ -221,13 +221,18 @@ void insertionSort (Variaveis *var) {
 
 	for (var->j = 1; var->j < var->tamanho; var->j++)
 	{
+		//i sera o anterior de j
 		var->i = var->j - 1;
+		//aux recebe sempre a posicao atual
 		var->aux = var->vetor[var->j];
+		//enquanto i for positivo e aux for menor que o anterior eh realizado a troca
 		while ((var->i >= 0) && (var->aux < var->vetor[var->i]))
 		{
+			//posicao da frente recebe o maior
 			var->vetor[var->i + 1] = var->vetor[var->i];
 			var->i--;
 		}
+		//onde o aux eh reposicionado
 		var->vetor[var->i + 1] = var->aux;
 	}
 
@@ -244,14 +249,19 @@ void selectionSort (Variaveis *var) {
 	printArray(var);
 	printf("-----------------------\n");
 
+	//tamanho - 1 para nao ultrapassar o tamanho real do vetor na comparacao
 	for (var->i = 0; var->i < (var->tamanho - 1); var->i++)
 	{
+		//posicao do menor indice
 		var->indexMenor = var->i;
+		//faz a busca pelo menor elemento comparado com a posicao atual
 		for (var->j = (var->i + 1); var->j < var->tamanho; var->j++)
 		{
 			if (var->vetor[var->j] < var->vetor[var->indexMenor])
+				//recebe a posicao da onde se encotra o menor
 				var->indexMenor = var->j;
 		}
+		//se i/posicao atual nao for a do menor, eh realizado a troca
 		if (var->i != var->indexMenor)
 		{
 			var->aux = var->vetor[var->i];
@@ -271,16 +281,21 @@ void quickSort (Variaveis *var, int esq, int dir) {
 	var->i = esq;
 	var->j = dir;
 
+	//seleciona o pivo
 	var->mid = var->vetor[(esq + dir)/2];
 
 	do
 	{
+		//procura a posicao do elemento menor que o pivo
 		while (var->vetor[var->i] < var->mid)
 			var->i++;
 		
+		//procura a posicao do elemento maior que o pivo
 		while (var->mid < var->vetor[var->j])
 			var->j--;
 		
+		//onde as trocas ocorrem -> enquanto a posicao do menor elemento for inferior ou igual a posicao do pivo
+		//ou enquanto a posicao do maior elemento for superior ou igual a do pivo, eh realizado a troca
 		if (var->i <= var->j)
 		{
 			var->aux = var->vetor[var->i];
@@ -291,8 +306,10 @@ void quickSort (Variaveis *var, int esq, int dir) {
 		}
 	} while (var->i <= var->j);
 	
+	//enquanto a esquerda for menor que a posicao final
 	if (esq < var->j)
 		quickSort(var, esq, var->j);
+	//enquanto a direita for maior que a posicao inicial
 	if (var->i < dir)
 		quickSort(var, var->i, dir);
 }
