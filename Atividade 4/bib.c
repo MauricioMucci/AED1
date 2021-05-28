@@ -221,18 +221,21 @@ void insertionSort (Variaveis *var) {
 
 	for (var->j = 1; var->j < var->tamanho; var->j++)
 	{
-		//i sera o anterior de j
+		//i sera a posicao anterior
 		var->i = var->j - 1;
-		//aux recebe sempre a posicao atual
+		
+		//aux recebe sempre o elemento da posicao atual
 		var->aux = var->vetor[var->j];
+
 		//enquanto i for positivo e aux for menor que o anterior eh realizado a troca
 		while ((var->i >= 0) && (var->aux < var->vetor[var->i]))
 		{
-			//posicao da frente recebe o maior
+			//posicao da frente recebe o maior que o aux
 			var->vetor[var->i + 1] = var->vetor[var->i];
 			var->i--;
 		}
 		//onde o aux eh reposicionado
+
 		var->vetor[var->i + 1] = var->aux;
 	}
 
@@ -249,19 +252,22 @@ void selectionSort (Variaveis *var) {
 	printArray(var);
 	printf("-----------------------\n");
 
-	//tamanho - 1 para nao ultrapassar o tamanho real do vetor na comparacao
+	//loop externo para repassar todo o vetor
 	for (var->i = 0; var->i < (var->tamanho - 1); var->i++)
 	{
 		//posicao do menor indice
 		var->indexMenor = var->i;
-		//faz a busca pelo menor elemento comparado com a posicao atual
+
+		//loop interno que trabalha com o proximo elemento
 		for (var->j = (var->i + 1); var->j < var->tamanho; var->j++)
 		{
+			//faz a busca pelo menor elemento comparado com a posicao atual
 			if (var->vetor[var->j] < var->vetor[var->indexMenor])
 				//recebe a posicao da onde se encotra o menor
 				var->indexMenor = var->j;
 		}
-		//se i/posicao atual nao for a do menor, eh realizado a troca
+
+		//se posicao atual(i) nao for a do menor, eh realizado a troca
 		if (var->i != var->indexMenor)
 		{
 			var->aux = var->vetor[var->i];
