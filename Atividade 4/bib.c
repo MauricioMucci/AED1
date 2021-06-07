@@ -234,8 +234,8 @@ void insertionSort (Variaveis *var) {
 			var->vetor[var->i + 1] = var->vetor[var->i];
 			var->i--;
 		}
-		//onde o aux eh reposicionado
 
+		//onde o aux eh reposicionado
 		var->vetor[var->i + 1] = var->aux;
 	}
 
@@ -292,16 +292,15 @@ void quickSort (Variaveis *var, int esq, int dir) {
 
 	do
 	{
-		//procura a posicao do elemento menor que o pivo
+		//procura a posicao do elemento maior que o pivo na esquerda
 		while (var->vetor[var->i] < var->mid)
 			var->i++;
 		
-		//procura a posicao do elemento maior que o pivo
+		//procura a posicao do elemento menor que o pivo na direita
 		while (var->mid < var->vetor[var->j])
 			var->j--;
 		
-		//onde as trocas ocorrem -> enquanto a posicao do menor elemento for inferior ou igual a posicao do pivo
-		//ou enquanto a posicao do maior elemento for superior ou igual a do pivo, eh realizado a troca
+		//se o a posicao do maior estiver na esquerda eh feita a troca com a posicao do menor na direita
 		if (var->i <= var->j)
 		{
 			var->aux = var->vetor[var->i];
@@ -312,10 +311,10 @@ void quickSort (Variaveis *var, int esq, int dir) {
 		}
 	} while (var->i <= var->j);
 	
-	//enquanto a esquerda for menor que a posicao final
+	//enquanto a esquerda for menor que a posicao final falta ordenacao
 	if (esq < var->j)
 		quickSort(var, esq, var->j);
-	//enquanto a direita for maior que a posicao inicial
+	//enquanto a direita for maior que a posicao inicial falta ordenacao
 	if (var->i < dir)
 		quickSort(var, var->i, dir);
 }
