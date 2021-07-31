@@ -20,15 +20,12 @@ void clearList(LinkedList **head)
     while (*tracer)
     {
         aux = *tracer;
-        tracer = &(*tracer)->next;
+        *tracer = (*tracer)->next;
         free(aux->data.name);
         free(aux->data.address);
         free(aux->data.cpf);
         free(aux);
     }
-
-    printf("\t   [ The list was cleared ]\n");
-    pause();
 }
 
 int menu(LinkedList **head)
@@ -65,6 +62,7 @@ int menu(LinkedList **head)
         break;
     case 5:
         //reverseList(head);
+        testaDoublyLinked(head);
         break;
     case 6:
         clearList(head);
@@ -174,13 +172,23 @@ void push(LinkedList **head)
 
     fillData(body);
 
-    while ((*tracer) && strcmp((*tracer)->data.name, body->data.name) < 1)
+    if (!(*tracer))
     {
-        tracer = &(*tracer)->next;
+        *tracer = body;
+        body->previous = NULL;
+        body->next = NULL;
     }
+    else
+    {
+        while ((*tracer)->next)
+        {
+            tracer = &(*tracer)->next;
+        }
 
-    body->next = *tracer;
-    *tracer = body;
+        body->next = (*tracer)->next;
+        body->previous = *tracer;
+        (*tracer)->next = body;
+    }
 }
 
 void pop(LinkedList **head)
@@ -190,6 +198,19 @@ void pop(LinkedList **head)
 
     BOOL exists = FALSE;
     LinkedList *old, **tracer = head;
+
+    if (!(*tracer))
+    {
+        printf("\t\t[ Empty List ]\n");
+        pause();
+        return;
+    }
+
+    if (!((*tracer)->next))
+    {
+        clearList(head);
+        return;
+    }
 
     char name[MAX];
     printf("Type the name to be removed: ");
@@ -205,6 +226,9 @@ void pop(LinkedList **head)
     {
         old = *tracer;
         *tracer = (*tracer)->next;
+        if ((*tracer))
+            (*tracer)->previous = old->previous;
+
         free(old->data.name);
         free(old->data.address);
         free(old->data.name);
@@ -223,7 +247,7 @@ void searchName(LinkedList **head)
     clear();
 
     char aux[MAX];
-    printf("What's the address you are looking for?\n");
+    printf("Who are you looking for?\n");
     fgets(aux, MAX, stdin);
     strtok(aux, "\n");
 
@@ -234,10 +258,12 @@ void searchName(LinkedList **head)
         {
             printf("\nName: %s\nAge: %d\nCPF: %s\nAddress: %s\n\n", (*tracer)->data.name, (*tracer)->data.age, (*tracer)->data.cpf, (*tracer)->data.address);
             pause();
-            break;
+            return;
         }
         tracer = &(*tracer)->next;
     }
+    printf("\t  [ Record doesn't exist ]\n");
+    pause();
 }
 
 void searchAddress(LinkedList **head)
@@ -257,10 +283,12 @@ void searchAddress(LinkedList **head)
         {
             printf("\nName: %s\nAge: %d\nCPF: %s\nAddress: %s\n\n", (*tracer)->data.name, (*tracer)->data.age, (*tracer)->data.cpf, (*tracer)->data.address);
             pause();
-            break;
+            return;
         }
         tracer = &(*tracer)->next;
     }
+    printf("\t  [ Record doesn't exist ]\n");
+    pause();
 }
 
 void listContacts(LinkedList **head)
@@ -286,42 +314,31 @@ void listContacts(LinkedList **head)
     }
     pause();
 }
-/*
+
 void reverseList(LinkedList **head)
 {
-
-    if (!(*head))
+    LinkedList **tracer = head;
+    if (!(*tracer))
     {
         printf("\t\t[ Empty List ]\n");
         pause();
         return;
     }
 
-    if (!((*head)->next))
+    if (!((*tracer)->next))
     {
         printf("\t [ There's only one record ]");
         pause();
         return;
     }
 
-    LinkedList *tmp = NULL, *current = (*head)->next;
-
-    while (current != NULL)
-    {
-        tmp = current->previous;
-        current->previous = current->next;
-        current->next = tmp;
-        current = current->previous;
-    }
-
-    if (tmp != NULL)
-        (*head)->next = tmp->previous;
+    
 
     printf("\t[ The process was completed ]\n");
     pause();
 }
-*/
-void teste(LinkedList **head)
+
+void testaDoublyLinked(LinkedList **head)
 {
     clear();
 
@@ -333,13 +350,26 @@ void teste(LinkedList **head)
         return;
     }
 
-    int i = 1;
+    char aux[MAX];
+    printf("Who are you looking for?\n");
+    fgets(aux, MAX, stdin);
+    strtok(aux, "\n");
+
+    if (strcmp(aux, (*tracer)->data.name) == 0)
+    {
+        return;
+    }
+
     while (*tracer)
     {
-        printf("-----[ Record #%d ]-----", i);
-        printf("\nName: %s\nAge: %d\nCPF: %s\nAddress: %s\n\n", (*tracer)->data.name, (*tracer)->data.age, (*tracer)->data.cpf, (*tracer)->data.address);
-        i++;
+        if (strcmp(aux, (*tracer)->data.name) == 0)
+        {
+            printf("\nName: %s\nAge: %d\nCPF: %s\nAddress: %s\n\n", (*tracer)->previous->data.name, (*tracer)->previous->data.age, (*tracer)->previous->data.cpf, (*tracer)->previous->data.address);
+            pause();
+            return;
+        }
         tracer = &(*tracer)->next;
     }
+    printf("\t  [ Record doesn't exist ]\n");
     pause();
 }

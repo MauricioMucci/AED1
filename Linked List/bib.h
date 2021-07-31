@@ -19,7 +19,7 @@ typedef struct node
 {
     Person data;
     struct node *next;
-    //struct node *previous;
+    struct node *previous;
 } LinkedList;
 
 void clear();
@@ -31,9 +31,11 @@ int searchMenu(LinkedList **head);
 void fillData(LinkedList *body);
 void clearList(LinkedList **head);
 void listContacts(LinkedList **head);
-//void reverseList(LinkedList **head);
+void reverseList(LinkedList **head);
 
 void pop(LinkedList **head);
 void push(LinkedList **head);
 void searchName(LinkedList **head);
 void searchAddress(LinkedList **head);
+
+void testaDoublyLinked(LinkedList **head);
