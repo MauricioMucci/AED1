@@ -1,41 +1,39 @@
 #include "bib.h"
 
-void pause() {
+void pause()
+{
 
-	printf("\n\t[ Press any key to continue ]\n");
-	getchar();
+    printf("\n\t[ Press any key to continue ]\n");
+    getchar();
 }
 
-void clear() {
+void clear()
+{
 
-	system("cls || clear");
+    system("cls || clear");
 }
 
-void readString(char *word, int size) {
+void clearList(LinkedList **head)
+{
+    LinkedList **tracer = head, *aux;
 
-    char c;
-    int i = 0;
-
-	c = getchar();
-	while ((c != '\n') && (i < size))
+    while (*tracer)
     {
-		word[i++] = c;
-		c = getchar();
-	}
-	word[i] = '\0';
+        aux = *tracer;
+        tracer = &(*tracer)->next;
+        free(aux->data.name);
+        free(aux->data.address);
+        free(aux->data.cpf);
+        free(aux);
+    }
 
-	if (c != '\n')
-    {
-		c = getchar();
-		while ((c != '\n') && (c != EOF))
-        {
-			c = getchar();
-		}
-	}
+    printf("\t   [ The list was cleared ]\n");
+    pause();
 }
 
-int menu(LinkedList *head) {
-    
+int menu(LinkedList **head)
+{
+
     clear();
     unsigned short int choice;
 
@@ -47,9 +45,9 @@ int menu(LinkedList *head) {
     printf("5. Reverse\n");
     printf("6. Exit\n");
     printf("Pick one: ");
-        scanf("%hd", &choice);
-    setbuf(stdin,NULL);
-  
+    scanf("%hd", &choice);
+    setbuf(stdin, NULL);
+
     switch (choice)
     {
     case 1:
@@ -59,20 +57,20 @@ int menu(LinkedList *head) {
         pop(head);
         break;
     case 3:
-        while(searchMenu(head));
+        while (searchMenu(head))
+            ;
         break;
     case 4:
         listContacts(head);
         break;
     case 5:
-        reverseList(head);
+        //reverseList(head);
         break;
     case 6:
         clearList(head);
-        free(head);
         return 0;
     default:
-        printf("\n\t[ ... ]\n");
+        printf("\n   [ Try an available option next time;) ]\n");
         pause();
         break;
     }
@@ -80,9 +78,16 @@ int menu(LinkedList *head) {
     return 1;
 }
 
-int searchMenu(LinkedList *head) {
-    
+int searchMenu(LinkedList **head)
+{
+
     clear();
+    if (!(*head))
+    {
+        printf("\t\t[ Empty List ]\n");
+        pause();
+        return 0;
+    }
     unsigned short int choice;
 
     printf("-----[ Search Menu ]-----\n");
@@ -90,8 +95,8 @@ int searchMenu(LinkedList *head) {
     printf("2. Address\n");
     printf("3. Exit\n");
     printf("Pick one: ");
-        scanf("%hd", &choice);
-    setbuf(stdin,NULL);
+    scanf("%hd", &choice);
+    setbuf(stdin, NULL);
 
     switch (choice)
     {
@@ -112,196 +117,194 @@ int searchMenu(LinkedList *head) {
     return 1;
 }
 
-void reset(LinkedList *head) {
-
-    head->next = NULL;
-    head->previous = NULL;
-}
-
-int empty(LinkedList *head) {
-    if (head->next == NULL)
-    {
-        return 1;
-    }
-    return 0;
-}
-
-void clearList(LinkedList *head) {
-    if (!empty(head))
-    {
-        LinkedList *p, *n;
-        p = head->next;
-        while (p != NULL)
-        {
-            n = p->next;
-            free(p);
-            p = n;
-        }
-    }
-}
-
-void fillData(LinkedList *body) {
-
+void fillData(LinkedList *body)
+{
     clear();
+
+    char aux[MAX];
+
     printf("\nName: ");
-        readString(body->data.name,MAX);
+    fgets(aux, MAX, stdin);
+    strtok(aux, "\n");
+    body->data.name = (char *)malloc((strlen(aux) + 1) * sizeof(char));
+    if (!body->data.name)
+    {
+        printf("\n\t[ ERROR: IMPOSSIBLE TO ALLOCATE MEMORY ]\n");
+        exit(1);
+    }
+    strcpy(body->data.name, aux);
+
     printf("Address: ");
-        readString(body->data.address,MAX);
+    fgets(aux, MAX, stdin);
+    strtok(aux, "\n");
+    body->data.address = (char *)malloc((strlen(aux) + 1) * sizeof(char));
+    if (!body->data.address)
+    {
+        printf("\n\t[ ERROR: IMPOSSIBLE TO ALLOCATE MEMORY ]\n");
+        exit(1);
+    }
+    strcpy(body->data.address, aux);
+
     printf("CPF: ");
-        readString(body->data.cpf,MAX);
+    fgets(aux, MAX, stdin);
+    strtok(aux, "\n");
+    body->data.cpf = (char *)malloc((strlen(aux) + 1) * sizeof(char));
+    if (!body->data.cpf)
+    {
+        printf("\n\t[ ERROR: IMPOSSIBLE TO ALLOCATE MEMORY ]\n");
+        exit(1);
+    }
+    strcpy(body->data.cpf, aux);
+
     printf("Age: ");
-        scanf("%d", &body->data.age);
+    scanf("%d", &body->data.age);
     setbuf(stdin, NULL);
 }
 
-void push(LinkedList *head) {
+void push(LinkedList **head)
+{
 
-    LinkedList *body;
-    body = (LinkedList*)malloc(sizeof(LinkedList));
+    LinkedList *body, **tracer = head;
+    body = (LinkedList *)malloc(sizeof(LinkedList));
     if (!body)
     {
         printf("\n\t[ ERROR: IMPOSSIBLE TO ALLOCATE MEMORY ]\n");
         exit(1);
     }
-    
-    if (empty(head))
+
+    fillData(body);
+
+    while ((*tracer) && strcmp((*tracer)->data.name, body->data.name) < 1)
     {
-        head->next = body;
-        fillData(body);
-        body->next = NULL;
-        body->previous = NULL;
-    } else
-    {
-        LinkedList *tmp;
-        for (tmp = head->next; tmp->next != NULL; tmp = tmp->next);
-        tmp->next = body;
-        body->previous = tmp;
-        fillData(body);
-        body->next = NULL;
+        tracer = &(*tracer)->next;
     }
-    
+
+    body->next = *tracer;
+    *tracer = body;
 }
 
-void pop(LinkedList *head) {
+void pop(LinkedList **head)
+{
 
     clear();
 
-    if (empty(head))
-    {
-        printf("\t\t[ No data... ]");
-        pause();
-        return;
-    }
+    BOOL exists = FALSE;
+    LinkedList *old, **tracer = head;
 
     char name[MAX];
-    printf("Who are you going to remove?\n");
-        readString(name,MAX);
+    printf("Type the name to be removed: ");
+    fgets(name, MAX, stdin);
+    strtok(name, "\n");
 
-    LinkedList *tmp, *body;
-    for (tmp = head->next; tmp != NULL; tmp = tmp->next)
+    while ((*tracer) && !(exists = (strcmp(name, (*tracer)->data.name) == 0)))
     {
-        if (strcmp(name, tmp->data.name) == 0)
-        {
-            body = tmp->previous;
-            body->next = tmp->next;
-            free(tmp);
-            printf("\t[ Record successfully removed ]\n");
-            pause();
-            return;
-        }
+        tracer = &(*tracer)->next;
     }
-    printf("\t[ Record not found ]\n");
-    pause();
+
+    if (exists)
+    {
+        old = *tracer;
+        *tracer = (*tracer)->next;
+        free(old->data.name);
+        free(old->data.address);
+        free(old->data.name);
+        free(old);
+    }
+    else
+    {
+        printf("\t  [ Record doesn't exist ]\n");
+        pause();
+    }
 }
 
-void searchName(LinkedList *head) {
-    
+void searchName(LinkedList **head)
+{
+
     clear();
-
-    if (empty(head))
-    {
-        printf("\t\t[ No data... ]");
-        pause();
-        return;
-    }
-
-    char aux[MAX];
-    printf("Who are you looking for?\n");
-        readString(aux,MAX);
-    
-    LinkedList *tmp;
-    for (tmp = head->next; tmp != NULL; tmp = tmp->next)
-    {
-        if (strcmp(aux, tmp->data.name) == 0)
-            printf("\nName: %s\nAge: %d\nCPF: %s\nAddress: %s\n", tmp->data.name, tmp->data.age, tmp->data.cpf, tmp->data.address);
-        
-    }
-    pause();
-}
-
-void searchAddress(LinkedList *head) {
-    
-    clear();
-
-    if (empty(head))
-    {
-        printf("\t\t[ No data... ]");
-        pause();
-        return;
-    }
 
     char aux[MAX];
     printf("What's the address you are looking for?\n");
-        readString(aux,MAX);
-    
-    LinkedList *tmp;
-    for (tmp = head->next; tmp != NULL; tmp = tmp->next)
+    fgets(aux, MAX, stdin);
+    strtok(aux, "\n");
+
+    LinkedList **tracer = head;
+    while (*tracer)
     {
-        if (strcmp(aux, tmp->data.address) == 0)
-            printf("\nName: %s\nAge: %d\nCPF: %s\nAddress: %s\n", tmp->data.name, tmp->data.age, tmp->data.cpf, tmp->data.address);
-        
+        if (strcmp(aux, (*tracer)->data.name) == 0)
+        {
+            printf("\nName: %s\nAge: %d\nCPF: %s\nAddress: %s\n\n", (*tracer)->data.name, (*tracer)->data.age, (*tracer)->data.cpf, (*tracer)->data.address);
+            pause();
+            break;
+        }
+        tracer = &(*tracer)->next;
     }
-    pause();
 }
 
-void listContacts(LinkedList *head) {
-    
+void searchAddress(LinkedList **head)
+{
+
     clear();
-    if (empty(head))
+
+    char aux[MAX];
+    printf("What's the address you are looking for?\n");
+    fgets(aux, MAX, stdin);
+    strtok(aux, "\n");
+
+    LinkedList **tracer = head;
+    while (*tracer)
     {
-        printf("\t\t[ No data... ]");
+        if (strcmp(aux, (*tracer)->data.address) == 0)
+        {
+            printf("\nName: %s\nAge: %d\nCPF: %s\nAddress: %s\n\n", (*tracer)->data.name, (*tracer)->data.age, (*tracer)->data.cpf, (*tracer)->data.address);
+            pause();
+            break;
+        }
+        tracer = &(*tracer)->next;
+    }
+}
+
+void listContacts(LinkedList **head)
+{
+
+    clear();
+
+    LinkedList **tracer = head;
+    if (!(*tracer))
+    {
+        printf("\t\t[ Empty List ]\n");
         pause();
         return;
     }
-    
-    LinkedList *tmp;
-    int i = 1;
 
-    for (tmp = head->next; tmp != NULL; tmp = tmp->next)
+    int i = 1;
+    while (*tracer)
     {
-        printf("-----[ Record #%d ]-----\n", i++);
-        printf("Name: %s\nAge: %d\nCPF: %s\nAddress: %s\n", tmp->data.name, tmp->data.age, tmp->data.cpf, tmp->data.address);
+        printf("-----[ Record #%d ]-----", i);
+        printf("\nName: %s\nAge: %d\nCPF: %s\nAddress: %s\n\n", (*tracer)->data.name, (*tracer)->data.age, (*tracer)->data.cpf, (*tracer)->data.address);
+        i++;
+        tracer = &(*tracer)->next;
     }
     pause();
 }
+/*
+void reverseList(LinkedList **head)
+{
 
-void reverseList(LinkedList *head) {
-    
-    if (empty(head))
+    if (!(*head))
     {
-        printf("\t\t[ No data... ]");
+        printf("\t\t[ Empty List ]\n");
         pause();
         return;
     }
 
-    if (empty(head->next))
+    if (!((*head)->next))
     {
-        printf("\t[ There's only one record ]");
+        printf("\t [ There's only one record ]");
         pause();
         return;
     }
-    
-    LinkedList *tmp = NULL, *current = head->next;
+
+    LinkedList *tmp = NULL, *current = (*head)->next;
 
     while (current != NULL)
     {
@@ -312,9 +315,31 @@ void reverseList(LinkedList *head) {
     }
 
     if (tmp != NULL)
-        head->next = tmp->previous;
-    
+        (*head)->next = tmp->previous;
 
     printf("\t[ The process was completed ]\n");
+    pause();
+}
+*/
+void teste(LinkedList **head)
+{
+    clear();
+
+    LinkedList **tracer = head;
+    if (!(*tracer))
+    {
+        printf("\t\t[ Empty List ]\n");
+        pause();
+        return;
+    }
+
+    int i = 1;
+    while (*tracer)
+    {
+        printf("-----[ Record #%d ]-----", i);
+        printf("\nName: %s\nAge: %d\nCPF: %s\nAddress: %s\n\n", (*tracer)->data.name, (*tracer)->data.age, (*tracer)->data.cpf, (*tracer)->data.address);
+        i++;
+        tracer = &(*tracer)->next;
+    }
     pause();
 }

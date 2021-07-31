@@ -3,35 +3,37 @@
 #include <string.h>
 
 #define MAX 30
+#define TRUE 1
+#define FALSE 0
+typedef int BOOL;
 
-typedef struct person {
-    char name[MAX];
-    char address[MAX];
-    char cpf[MAX];
+typedef struct person
+{
+    char *name;
+    char *address;
+    char *cpf;
     int age;
 } Person;
 
-typedef struct node {
+typedef struct node
+{
     Person data;
     struct node *next;
-    struct node *previous;
+    //struct node *previous;
 } LinkedList;
 
-void pause();
 void clear();
+void pause();
 
-int menu(LinkedList *head);
-int searchMenu(LinkedList *head);
+int menu(LinkedList **head);
+int searchMenu(LinkedList **head);
 
-void readString(char *word, int size);
-
-void reset(LinkedList *head);
-int empty(LinkedList *head);
-void clearList(LinkedList *body);
 void fillData(LinkedList *body);
-void push(LinkedList *head);
-void pop(LinkedList *head);
-void searchName(LinkedList *head);
-void searchAddress(LinkedList *head);
-void listContacts(LinkedList *head);
-void reverseList(LinkedList *head);
+void clearList(LinkedList **head);
+void listContacts(LinkedList **head);
+//void reverseList(LinkedList **head);
+
+void pop(LinkedList **head);
+void push(LinkedList **head);
+void searchName(LinkedList **head);
+void searchAddress(LinkedList **head);
