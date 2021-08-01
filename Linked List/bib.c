@@ -61,8 +61,8 @@ int menu(LinkedList **head)
         listContacts(head);
         break;
     case 5:
-        //reverseList(head);
-        testaDoublyLinked(head);
+        reverseList(head);
+        //testaDoublyLinked(head);
         break;
     case 6:
         clearList(head);
@@ -107,7 +107,7 @@ int searchMenu(LinkedList **head)
     case 3:
         return 0;
     default:
-        printf("\n\t[ ... ]\n");
+        printf("\n   [ Try an available option next time;) ]\n");
         pause();
         break;
     }
@@ -331,13 +331,49 @@ void reverseList(LinkedList **head)
         pause();
         return;
     }
+    /*
 
+    while ((*tracer)->next)
+    {
+        tracer = &(*tracer)->next;
+    }
+
+    head = tracer;
     
+    LinkedList *tmp;
+
+    while (*tracer)
+    {
+        tmp = (*tracer)->next;
+        (*tracer)->next = (*tracer)->previous;
+        if((*tracer))
+            (*tracer)->previous = tmp;
+        (*tracer) = (*tracer)->next;
+    }
+    */
+
+    LinkedList *tmp;
+    while ((*tracer)->next)
+    {
+        tmp = (*tracer)->next;
+        (*tracer)->next = (*tracer)->previous;
+        (*tracer)->previous = tmp;
+        (*tracer) = tmp;
+    }
+
+    if (tmp)
+    {
+        tmp = (*tracer)->next;
+        (*tracer)->next = (*tracer)->previous;
+        (*tracer)->previous = tmp;
+        head = tracer;
+    }
 
     printf("\t[ The process was completed ]\n");
     pause();
 }
 
+/*
 void testaDoublyLinked(LinkedList **head)
 {
     clear();
@@ -373,3 +409,4 @@ void testaDoublyLinked(LinkedList **head)
     printf("\t  [ Record doesn't exist ]\n");
     pause();
 }
+*/

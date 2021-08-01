@@ -38,4 +38,4 @@ void push(LinkedList **head);
 void searchName(LinkedList **head);
 void searchAddress(LinkedList **head);
 
-void testaDoublyLinked(LinkedList **head);
+//void testaDoublyLinked(LinkedList **head);
