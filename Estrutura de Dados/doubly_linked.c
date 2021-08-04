@@ -231,7 +231,7 @@ void pop(LinkedList **head)
 
         free(old->data.name);
         free(old->data.address);
-        free(old->data.name);
+        free(old->data.cpf);
         free(old);
     }
     else

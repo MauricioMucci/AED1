@@ -207,7 +207,7 @@ void pop(LinkedList **head)
         *tracer = (*tracer)->next;
         free(old->data.name);
         free(old->data.address);
-        free(old->data.name);
+        free(old->data.cpf);
         free(old);
     }
     else
