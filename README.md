@@ -4,9 +4,9 @@
 
 ### Conteúdos 📚
 
-1. Árvores 📌
-2. Estrutura de Dados 📌
-3. Algoritimos de Ordenação 📌 
+1. Árvores 
+2. Estrutura de Dados 
+3. Algoritimos de Ordenação 
 
 ### Observações 📌
 
